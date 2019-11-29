@@ -1,0 +1,136 @@
+<!--
+  
+-->
+<hr>
+<div *ngIf="operation == 'Ajouter'" class="alert alert-success alert-dismissable fade show" >
+  <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+<div *ngIf="operation == 'Edit'" class="alert alert-warning alert-dismissable fade show">
+  <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+  <div  *ngIf="operation == 'Delete'" class="alert alert-danger alert-dismissable fade show">
+    <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+  
+
+<div class="row">
+
+<div class="col-md-8"> 
+    <div class="main-card mb-3 card">
+          <div class="card-body"><h5 class="card-title"><b><i>Les Categories</i></b></h5>
+            <hr>
+          <button class="pull-right btn btn-outline-primary fa fa-plus-circle " (click)="operation ='Add'; " > Ajouter nouveau categorie </button>
+
+          <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="array"  class="mat-elevation-z8" >
+            
+                <!-- Position Column -->
+                <ng-container matColumnDef="libelle">
+                  <th mat-header-cell *matHeaderCellDef > Libelle </th>
+                  <td mat-cell *matCellDef="let element"> {{element.libelle}}   </td>
+                </ng-container>
+
+            
+                         
+                <ng-container matColumnDef="createdAt">
+                    <th mat-header-cell *matHeaderCellDef > Créé à </th>
+                    <td mat-cell *matCellDef="let element"> {{element.createdAt | date:'short'}} </td>
+                  </ng-container>
+                
+                  <!-- Symbol Column -->
+                  <ng-container matColumnDef="updatedAt">
+                    <th mat-header-cell *matHeaderCellDef > Mis à jour à </th>
+                    <td mat-cell *matCellDef="let element"> {{element.updatedAt | date:'short'}} </td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="active">
+                    <th mat-header-cell *matHeaderCellDef >  </th>
+                    <td mat-cell *matCellDef="let element">  
+                        <button *ngIf = "element.active" class="btn btn-outline-danger btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="isActive" (click)="isActive(element) ;">
+                            <i class="fa fa-toggle-on font-14"></i>
+                        </button>
+                        <button *ngIf = "!element.active" class="btn btn-outline-danger btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="isActive" (click)="isActive(element) ;">
+                            <i class="fa fa-toggle-off font-14"></i>
+                        </button> </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef >  </th>
+                  <td  mat-cell *matCellDef="let element"> 
+                     
+                      <button class="btn btn-outline-warning btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="Update" (click)="operation ='Update' ;selected=element"><i class="fa fa-pencil font-14"></i></button>
+                  </td>
+                </ng-container>
+              
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator #paginator [pageSize]="pageSize"  
+                [showFirstLastButtons]="true" [length]="totalSize"
+                [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+              </mat-paginator>
+            
+         </div>
+
+            
+
+        </div>
+    </div>
+</div>
+
+
+
+  
+  <div class="col-md-4">
+      <div class="main-card mb-3 card">
+          <div class="card-body"><h5 class="card-title"> <b><i>{{ 
+              operation == 'Update' ? 'Modifier categorie '  + selected.libelle:
+              operation == 'Add' ? 'Ajouter un nouveau categorie' :
+              operation == 'View' ? ' Categorie ' + selected.libelle:
+              operation == 'Supprimer' ? 'Confirmation de la suppression categorie ' + selected.libelle : ' choisir l opération'
+            }}</i></b></h5>
+            <hr>
+            <form  [formGroup]="AddCate" >
+                <div class="position-relative form-group" *ngIf=" operation == 'Add'"  >
+                    <input  id="exampleAddress" formControlName="libelle"
+                  placeholder="Categorie ..."
+                  type="text"
+                  class="form-control">
+                </div>
+       
+                <div class="form-group row"  *ngIf=" operation == 'Add'">
+                  <div class="col-sm-12 ml-sm-auto">
+                      <button type="reset" class="btn btn-warning">Cancel</button>
+                      <button  type="submit" [disabled]= "AddCate.prestine || AddCate.invalid" class="  pull-right btn btn-info notika-btn-cyan"  (click)="processForm(-1)"   (click)="operation ='Ajouter'; "  >Ajouter</button>
+                  </div>
+              </div>
+            </form>
+            <form  [formGroup]="EditCate" >
+                  <div class="position-relative form-group" *ngIf=" operation == 'Update'"  >
+                      <input [(ngModel)]="selected.libelle" formControlName="libelle" id="exampleAddress"
+                    placeholder="Categorie ..."
+                    type="text"
+                    class="form-control">
+                  </div>
+                  <div class="form-group row"  *ngIf=" operation == 'Update'">
+                    <div class="col-sm-12 ml-sm-auto">
+                        <button type="reset" class="btn btn-warning">Cancel</button>
+                        <button  type="submit" [disabled]= "EditCate.prestine || EditCate.invalid" class="  pull-right btn btn-info notika-btn-cyan"  (click)="processForm(selected.id)" (click)="operation ='Edit'; " >Modifier</button>
+                    </div>
+                </div>
+                </form>
+                <div  *ngIf="operation == 'Supprimer'" >
+                  
+                    <div class="alert alert-danger alert-dismissable fade show">
+                          <p>Vous voulez vraiment supprimer cette categorie ?</p>
+
+                      <p>
+                          <button class="btn btn-success"  (click)="desactiveCategorie(selected) " (click)="operation ='Delete'; ">Confirmer</button>
+                          <button class="btn btn-warning">Cancel</button>
+                      </p>
+                  </div>
+                    
+                </div>
+               </div>
+        </div>
+  </div>
+</div>
+

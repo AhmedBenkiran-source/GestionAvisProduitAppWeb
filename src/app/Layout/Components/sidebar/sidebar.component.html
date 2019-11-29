@@ -1,0 +1,90 @@
+<div [class]="'app-sidebar sidebar-shadow ' + (config$ | async).sidebarTheme" (mouseover)="sidebarHover()"
+     (mouseout)="sidebarHover()">
+  <div class="app-header__logo">
+    <div class="logo-src"></div>
+    <div class="header__pane ml-auto">
+      <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+              [ngClass]="{'is-active' : globals.toggleSidebar}" (click)="toggleSidebar()">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+  <div class="app-sidebar-content">
+    <div class="app-sidebar-scroll">
+      <perfect-scrollbar [autoPropagation]="true">
+        <div class="v-sidebar-menu vsm-default">
+          <div class="vsm-list">
+            <ngb-accordion [destroyOnHide]="false" [closeOthers]="true" [activeIds]="extraParameter">
+              <ngb-panel>
+                <ng-template ngbPanelHeader>
+                  <div class="vsm-header">Navigation principale</div>
+                </ng-template>
+              </ngb-panel>
+              <ngb-panel id="dashboardsMenu">
+                <ng-template ngbPanelHeader>
+                  <button ngbPanelToggle class="vsm-link">
+                    <i class="vsm-icon pe-7s-rocket"></i>
+                    <span class="vsm-title">Tableaux de bord</span>
+                    <i class="vsm-arrow"></i>
+                  </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div class="vsm-dropdown">
+                    <div class="vsm-list">
+                      <div class="vsm-item"><a routerLink="" routerLinkActive="active-item"
+                                               [routerLinkActiveOptions]="{exact: true}" class="vsm-link"><span
+                        class="vsm-title">Analytique</span></a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-panel>
+       
+
+            </ngb-accordion>
+            <div class="vsm-header">Composants</div>
+            <div class="vsm-item">
+                <a routerLinkActive="active-item" routerLink="/elements/categorie" class="vsm-link">
+                  <i class="vsm-icon pe-7s-box2"></i>
+
+                  <span class="vsm-title">Categories</span></a>
+              </div>
+              <div class="vsm-item">
+                <a routerLinkActive="active-item" routerLink="/elements/marque" class="vsm-link"> 
+                  <i class="vsm-icon pe-7s-culture"></i>
+                  <span class="vsm-title">Marques</span></a>
+              </div>
+            <div class="vsm-header">Gestion</div>
+            <div class="vsm-item">
+              <a routerLink="/produit" routerLinkActive="active-item" class="vsm-link">
+                <i class="vsm-icon pe-7s-config"></i>
+                <span class="vsm-title">Gestion des produits</span>
+              </a>
+            </div>
+            <div class="vsm-item">
+                <a routerLink="/evenement" routerLinkActive="active-item" class="vsm-link">
+                  <i class="vsm-icon pe-7s-note2"></i>
+                  <span class="vsm-title">Gestion des événements</span>
+                </a>
+            </div>
+            <div class="vsm-header">Affichage</div>
+            <div class="vsm-item">
+              <a routerLink="/listeproduit" routerLinkActive="active-item" class="vsm-link">
+                <i class="vsm-icon pe-7s-server"></i>
+                <span class="vsm-title">Liste des produits</span>
+              </a>
+            </div>
+            <div class="vsm-item">
+                <a routerLink="/listemarque" routerLinkActive="active-item" class="vsm-link">
+                  <i class="vsm-icon pe-7s-plugin"></i>
+                  <span class="vsm-title">Liste des marques</span>
+                </a>
+              </div>
+          </div>
+        </div>
+      </perfect-scrollbar>
+    </div>
+  </div>
+</div>

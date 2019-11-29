@@ -1,0 +1,276 @@
+
+<hr>
+<div *ngIf="operation == 'Ajouter'" class="alert alert-success alert-dismissable fade show" >
+  <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+<div *ngIf="operation == 'Edit'" class="alert alert-warning alert-dismissable fade show">
+  <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+  <div  *ngIf="operation == 'Delete'" class="alert alert-danger alert-dismissable fade show">
+    <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+  
+
+<div class="row">
+
+<div class="col-md-8"> 
+    <div class="main-card mb-3 card">
+        <div class="card-body"><h5 class="card-title"><b><i>Les Produits</i></b></h5>
+          <hr>
+          <button class="pull-right btn btn-outline-primary fa fa-plus-circle " (click)="operation ='Add'; " > Ajouter nouveau produit </button>
+
+          <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="array" matSort>
+            
+                <!-- Position Column -->
+                <ng-container matColumnDef="libelle">
+                  <th mat-header-cell *matHeaderCellDef> Libelle </th>
+                  <td mat-cell *matCellDef="let element"> {{element.nameProduit}} </td>
+                </ng-container>
+            
+                         
+                <ng-container matColumnDef="createdAt">
+                    <th mat-header-cell *matHeaderCellDef> Créé à </th>
+                    <td mat-cell *matCellDef="let element"> {{element.createdAt | date:'short'}} </td>
+                  </ng-container>
+                
+                  <!-- Symbol Column -->
+                  <ng-container matColumnDef="updatedAt">
+                    <th mat-header-cell *matHeaderCellDef> Mis à jour à </th>
+                    <td mat-cell *matCellDef="let element"> {{element.updatedAt | date:'short'}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="active">
+                      <th mat-header-cell *matHeaderCellDef >  </th>
+                      <td mat-cell *matCellDef="let element">  
+                          <button *ngIf = "element.active" class="btn btn-outline-danger btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="isActive" (click)="isActive(element) ;operation ='Supprimer'; ;selected=element">
+                              <i class="fa fa-toggle-on font-14"></i>
+                          </button>
+                          <button *ngIf = "!element.active" class="btn btn-outline-danger btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="isActive" (click)="isActive(element) ;operation ='Supprimer'; ;selected=element">
+                              <i class="fa fa-toggle-off font-14"></i>
+                          </button> </td>
+                    </ng-container>
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>  </th>
+                  <td  mat-cell *matCellDef="let element">
+                      <button class="btn btn-outline-warning btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="Update" (click)="operation ='Update' ;selected=element"><i class="fa fa-pencil font-14"></i></button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="view">
+                    <th mat-header-cell *matHeaderCellDef>  </th>
+                  <td  mat-cell *matCellDef="let element">
+                      <button class="btn btn-outline-primary btn-circle m-r-5 button5 "   data-toggle="tooltip" data-original-title="View" (click)="operation ='View' ;selected=element"><i class="fa fa-eye font-14"></i></button>
+
+                    </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            
+            <mat-paginator #paginator [pageSize]="pageSize"  
+              [showFirstLastButtons]="true" [length]="totalSize"
+              [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+            </mat-paginator>
+         </div>
+
+        
+
+        </div>
+    </div>
+</div>
+
+
+
+  <div class="col-md-4">
+    <div class="main-card mb-3 card">
+        <div class="card-body">
+          <h5 class="card-title"> <b><i>{{ 
+            operation == 'Update' ? 'Modifier prodiut '  + selected.nameProduit:
+            operation == 'Add' ? 'Ajouter une nouveau produit' :
+            operation == 'Supprimer' ? 'Confirmation de la suppression prduit' + selected.nameProduit : ' choisir l opération'
+          }}</i></b></h5>
+          <hr>
+          <form  [formGroup]="AddProduit" >
+              <div class="position-relative form-group" *ngIf=" operation == 'Add'"  >
+                  <input  id="exampleAddress" formControlName="nameProduit"
+                placeholder="Produit ..."
+                type="text"
+                class="form-control">
+              </div>
+              <div class="position-relative form-group" *ngIf=" operation == 'Add'"  >
+                <input  id="exampleAddress" formControlName="description"
+              placeholder="Description ..."
+              type="text"
+              class="form-control">
+            </div>
+            <div class="position-relative form-group" *ngIf=" operation == 'Add'"  >
+            
+                  <ngx-select
+                      [allowClear]="true"
+                      [defaultValue]="doNgxDefault()"
+                      [items]="itemsMarque"
+                      placeholder="Aucune marque sélectionnée"
+                      (typed)="inputTyped('ngx-select', $event)"
+                      (select)="doSelectMarque($event)"
+                      (remove)="doRemove($event)"
+                      (selectionChanges)="doSelectOptions($event)">
+                </ngx-select>
+              
+            </div>
+        <!--
+            <div>
+                <ng-select>
+                    <ng-select *ngFor="let marque of marques;" [value]="marque.id">{{marque.libelle}}</ng-select>
+                  </ng-select>
+            </div>
+        -->  
+        
+            <div class="position-relative form-group" *ngIf=" operation == 'Add'"  >
+                    <ngx-select
+                        [allowClear]="true"
+                        [multiple]="true"
+                        [defaultValue]="doNgxDefault()"
+                        [items]="itemsCategorie"
+                        placeholder="Aucune categorie sélectionnée"
+                        (typed)="inputTyped('ngx-select', $event)"
+                        (select)="doSelectCategorie($event)"
+                        (remove)="doRemove($event)"
+                        (selectionChanges)="doSelectOptions($event)">
+                  </ngx-select>
+                
+              </div>
+              <div class="position-relative form-group" *ngIf=" operation == 'Add'"  >
+                  <label for="imageproduit" class="btn btn-primary btn-block btn-outlined">choisir les images de produit</label>
+                  <input type="file" id="imageproduit" name="fileproduit[]"  style="visibility:hidden;"  (change)='handleFileInput($event)' multiple>
+                </div>
+                <div  class="position-relative form-group" *ngIf=" operation == 'Add'"  >
+                   <label for="iconeproduit" class="btn btn-primary btn-block btn-outlined">Select Icone de produit</label>
+                  <input id="iconeproduit"  type="file" name="iconeproduit"  style="visibility:hidden;" (change)="onFileChange($event)">
+                </div>
+              <div class="form-group row"  *ngIf=" operation == 'Add'">
+                <div class="col-sm-12 ml-sm-auto">
+                    <button type="reset" class="btn btn-warning">Cancel</button>
+                    <button  type="submit" [disabled]= "AddProduit.prestine || AddProduit.invalid" class="  pull-right btn btn-info notika-btn-cyan"  (click)="processForm(-1)"   (click)="operation ='Ajouter'; "  >Ajouter</button>
+                </div>
+            </div>
+            
+          </form>
+          <form  [formGroup]="EditProduit" >
+              <div class="position-relative form-group" *ngIf=" operation == 'Update'"  >
+                  <input  id="exampleAddress" [(ngModel)] ="selected.nameProduit" formControlName="nameProduit"
+                placeholder="Produit ..."
+                type="text"
+                class="form-control">
+              </div>
+              <div class="position-relative form-group" *ngIf=" operation == 'Update'"  >
+                <input  id="exampleAddress"  [(ngModel)] ="selected.description" formControlName="description"
+              placeholder="Description ..."
+              type="text"
+              class="form-control">
+            </div>
+            <div class="position-relative form-group" *ngIf=" operation == 'Update'"  >
+            
+                  <ngx-select
+                      [allowClear]="true"
+                      [defaultValue]="doNgxDefault()"
+                      [items]="itemsMarque"
+                      placeholder="Aucune marque sélectionnée"
+                      (typed)="inputTyped('ngx-select', $event)"
+                      (select)="doSelectMarque($event)"
+                      (remove)="doRemove($event)"
+                      (selectionChanges)="doSelectOptions($event)">
+                </ngx-select>
+              
+            </div>
+        <!--
+            <div>
+                <ng-select>
+                    <ng-select *ngFor="let marque of marques;" [value]="marque.id">{{marque.libelle}}</ng-select>
+                  </ng-select>
+            </div>
+        -->  
+        
+            <div class="position-relative form-group" *ngIf=" operation == 'Update'"  >
+                    <ngx-select
+                        [allowClear]="true"
+                        [multiple]="true"
+                        [defaultValue]="doNgxDefault()"
+                        [items]="itemsCategorie"
+                        placeholder="Aucune categorie sélectionnée"
+                        (typed)="inputTyped('ngx-select', $event)"
+                        (select)="doSelectCategorie($event)"
+                        (remove)="doRemove($event)"
+                        (selectionChanges)="doSelectOptions($event)">
+                  </ngx-select>
+                
+              </div>
+              <div class="position-relative form-group" *ngIf=" operation == 'Update'"  >
+                  <label for="imageproduit" class="btn btn-primary btn-block btn-outlined">choisir les images de produit</label>
+                  <input type="file" id="imageproduit"  style="visibility:hidden;"  name="fileproduit[]" (change)='handleFileInput($event)' multiple>
+                </div>
+                <div  class="position-relative form-group" *ngIf=" operation == 'Update'"  >
+                    <label for="iconeproduit" class="btn btn-primary btn-block btn-outlined">Select Icone de produit (100x100)pixel</label>
+                  <input id="iconeproduit" style="visibility:hidden;" type="file" name="iconeproduit" (change)="onFileChange($event)">
+                </div>
+              <div class="form-group row"  *ngIf=" operation == 'Update'">
+                <div class="col-sm-12 ml-sm-auto">
+                    <button type="reset" class="btn btn-warning">Cancel</button>
+                    <button  type="submit" [disabled]= "EditProduit.prestine || EditProduit.invalid" class="  pull-right btn btn-info notika-btn-cyan" (click)="processForm(selected.id)" (click)="operation ='Edit'; "  >Modifier</button>
+                </div>
+            </div>
+            
+          </form>
+        
+      
+          <div  *ngIf="operation == 'Supprimer'" >
+                
+                  <div class="alert alert-danger alert-dismissable fade show">
+                        <p>Vous voulez vraiment supprimer ce produit ?</p>
+
+                    <p>
+                        <button class="btn btn-success"  (click)="deleteMarque(selected) " (click)="operation ='Delete'; ">Confirmer</button>
+                        <button class="btn btn-warning">Cancel</button>
+                    </p>
+                </div>
+                  
+          </div>
+          </div>
+    </div>
+  </div>
+  <div  class="col-md-12" *ngIf=" operation == 'View'" >
+      <div class="main-card mb-3 card">
+          <div class="card-body" >
+              <h5 class="card-title"> <b><i>{{ 
+                  operation == 'View' ? ' Produit ' + selected.nameProduit: ' '
+                }}</i></b></h5>
+                <hr>
+              <div class="row text-center text-lg-left">
+              
+                  <div class="col-lg-4 " *ngFor="let image of selected.imageProduit" >
+                          <img class="img-fluid img-thumbnail" [src]="URL+image" style="height: 171;width:fit-content;">
+                  </div>
+            
+               
+                 
+              </div>
+              
+              <hr>
+              <li> <b><i> Créé à :  </i></b> {{ selected.createdAt | date:'medium'}} </li>
+              <li><b><i> Mis à jour à :  </i> </b>  {{ selected.updatedAt | date:'medium'}}</li>
+              <hr>
+              <li> <b><i> La Marque :  </i></b> {{ selected.marque.libelle}}</li>
+              <li> <b><i> Les Categories :  </i></b> 
+                  <i *ngFor="let cat of selected.categories">
+                         /{{ cat.libelle}} 
+                  </i>
+                </li>
+              <hr>
+              <li>
+                  <b><i> Description :  </i></b>
+                  {{selected.description}} 
+              </li>
+             
+              <hr>
+            
+          </div>
+      </div>
+  </div>
+</div>
+

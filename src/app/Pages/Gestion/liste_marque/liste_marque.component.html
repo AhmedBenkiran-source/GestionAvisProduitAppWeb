@@ -1,0 +1,107 @@
+
+<hr>
+<div *ngIf="operation == 'Ajouter'" class="alert alert-success alert-dismissable fade show" >
+  <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+<div *ngIf="operation == 'Edit'" class="alert alert-warning alert-dismissable fade show">
+  <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+  <div  *ngIf="operation == 'Delete'" class="alert alert-danger alert-dismissable fade show">
+    <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+  
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="main-card mb-3 card">
+            <div class="card-body"><h5 class="card-title"><b><i>Les marques</i></b></h5>
+              <hr>
+              <div class="mat-elevation-z8">
+                  <table mat-table [dataSource]="array" matSort>
+                
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="libelle">
+                      <th mat-header-cell *matHeaderCellDef > Nom Marque </th>
+                          <td mat-cell *matCellDef="let element" >{{element.libelle }} </td>
+                    </ng-container>
+                                    
+                    <ng-container matColumnDef="view">
+                        <th mat-header-cell *matHeaderCellDef>  </th>
+                      <td  mat-cell *matCellDef="let element" >
+                          <button class="btn btn-outline-primary btn-circle m-r-5 button5 "   data-toggle="tooltip" data-original-title="View" (click)="operation ='View' ;selected=element;getMarque(element)"><i class="fa fa-eye font-14"></i></button>
+    
+                        </td>
+                    </ng-container>
+                
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+             
+                <mat-paginator #paginator [pageSize]="pageSize"  
+                  [showFirstLastButtons]="false" [length]="totalSize"
+                  [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+                </mat-paginator>
+             </div>
+    
+            
+    
+            </div>
+        </div>
+      </div>
+ 
+  <div  class="col-md-8" *ngIf=" operation == 'View'" >
+      <div class="main-card mb-3 card">
+          <div class="card-body" >
+              <h5 class="card-title"> <b><i>{{ 
+                  operation == 'View' ? ' Marque ' + selected.libelle: ' '
+                }}</i></b></h5>
+                <hr>
+              <div class="row text-center text-lg-left">
+                      <div class="col-lg-12" >
+                        
+                              <img class="img-fluid img-thumbnail" [src]="URL+ selected.imageMarque" style="height: 171;width:fit-content;">
+                        </div>
+              </div>
+              
+              <hr>
+              <li> <b><i> Créé à :  </i></b> {{ selected.createdAt | date:'medium'}}</li>
+              <li><b><i> Mis à jour à :  </i> </b>  {{ selected.updatedAt | date:'medium'}}</li>
+              <hr>
+              <li> <b><i> La Marque :  </i></b> {{ selected.libelle}}</li>
+            
+              <li>
+                  <b><i> Description :  </i></b>
+                  {{selected.description}} 
+              </li>
+              <hr>  
+              <table mat-table [dataSource]="arrayCommentaire" matSort>
+            
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="description">
+                      <th mat-header-cell *matHeaderCellDef > Les commentaires</th>
+                      <td mat-cell *matCellDef="let element" > {{element.descritpion  | slice:0:100}}  </td>
+                    </ng-container>
+                    <ng-container matColumnDef="note">
+                        <th mat-header-cell *matHeaderCellDef >  </th>
+                        <td  mat-cell *matCellDef="let element" [ngSwitch]="element.note">
+                          <b *ngSwitchCase="1">  <i class="fa fa-thumbs-up" aria-hidden="true"></i>                            </b>
+                          <b *ngSwitchCase="0"> <i class="fa fa-thumbs-down" aria-hidden="true"></i>                            </b> 
+                          
+                            <p *ngSwitchDefault> </p>
+                        </td>
+                    
+                      </ng-container>
+                   
+                  <tr mat-header-row *matHeaderRowDef="displayedColumnsCommentaire"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumnsCommentaire;"></tr>
+                  
+                </table>
+                <mat-paginator #paginatorCommentiare [pageSize]="pageSizeCommentaire"  
+                  [showFirstLastButtons]="false" [length]="totalSizeCommentaire"
+                  [pageIndex]="currentPageCommentaire" (page)="pageEvent = handlePageCommentaire($event)">
+                </mat-paginator>
+               
+             
+
+          </div>
+      </div>
+  </div>
+</div>
+

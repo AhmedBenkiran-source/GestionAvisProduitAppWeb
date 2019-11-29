@@ -1,0 +1,114 @@
+
+<hr>
+<div *ngIf="operation == 'Ajouter'" class="alert alert-success alert-dismissable fade show" >
+  <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+<div *ngIf="operation == 'Edit'" class="alert alert-warning alert-dismissable fade show">
+  <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+  <div  *ngIf="operation == 'Delete'" class="alert alert-danger alert-dismissable fade show">
+    <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+  
+
+<div class="row">
+
+<div class="col-md-8"> 
+    <div class="main-card mb-3 card">
+        <div class="card-body"><h5 class="card-title"><b><i>Les événemets</i></b></h5>
+          <hr>
+          <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="array" matSort>
+            
+                <!-- Position Column -->
+                <ng-container matColumnDef="user">
+                  <th mat-header-cell *matHeaderCellDef > Utilisateur </th>
+                      <td mat-cell *matCellDef="let element" >{{element.user.username }} </td>
+                </ng-container>
+            
+                         
+                <ng-container matColumnDef="createdAt">
+                    <th mat-header-cell *matHeaderCellDef  > Créé à </th>
+                    <td mat-cell *matCellDef="let element" > {{element.createdAt | date:'short'}} </td>
+                  </ng-container>
+        
+                  <!-- Symbol Column -->
+                  <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef > Description </th>
+                    <td mat-cell *matCellDef="let element" > {{element.description  | slice:0:10}} ... </td>
+                  </ng-container>
+                  <ng-container matColumnDef="note">
+                      <th mat-header-cell *matHeaderCellDef > Note </th>
+                      <td  mat-cell *matCellDef="let element" [ngSwitch]="element.note">
+                        <b *ngSwitchCase="1">  <i class="fa fa-thumbs-up" aria-hidden="true"></i>                            </b>
+                        <b *ngSwitchCase="0"> <i class="fa fa-thumbs-down" aria-hidden="true"></i>                            </b> 
+                        
+                          <p *ngSwitchDefault> </p>
+                      </td>
+                    </ng-container>
+                  <ng-container matColumnDef="active">
+                      <th mat-header-cell *matHeaderCellDef >  </th>
+                      <td mat-cell *matCellDef="let element" >  
+                          <button *ngIf = "element.active" class="btn btn-outline-danger btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="isActive" (click)="isActive(element) ;operation ='Supprimer'; ;selected=element">
+                              <i class="fa fa-toggle-on font-14"></i>
+                          </button>
+                          <button *ngIf = "!element.active" class="btn btn-outline-danger btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="isActive" (click)="isActive(element) ;operation ='Supprimer'; ;selected=element">
+                              <i class="fa fa-toggle-off font-14"></i>
+                          </button> </td>
+                    </ng-container>
+                <ng-container matColumnDef="view">
+                    <th mat-header-cell *matHeaderCellDef>  </th>
+                  <td  mat-cell *matCellDef="let element" >
+                      <button class="btn btn-outline-primary btn-circle m-r-5 button5 "   data-toggle="tooltip" data-original-title="View" (click)="operation ='View' ;selected=element"><i class="fa fa-eye font-14"></i></button>
+
+                    </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            <hr>
+         
+            <mat-paginator #paginator [pageSize]="pageSize"  
+              [showFirstLastButtons]="true" [length]="totalSize"
+              [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+            </mat-paginator>
+         </div>
+
+        
+
+        </div>
+    </div>
+</div>
+
+<!--
+
+-->
+
+<div class="col-md-4">
+    <div class="main-card mb-3 card">
+    <div class="card-body"><h5 class="card-title"> <b><i>{{ 
+        operation == 'View' ? ' Commentaire ' :' choisir l opération'
+      }}</i></b></h5>
+      <hr>
+      <div  *ngIf=" operation == 'View'">
+          <hr>
+          <li><b><i>Nom d'utilisateur :  </i> </b>  {{ selected.user.username}}</li>
+          <li> <b><i> Créé à :  </i></b> {{ selected.createdAt | date:'medium'}}</li>
+          <li><b><i> Mis à jour à :  </i> </b>  {{ selected.updatedAt | date:'medium'}}</li>
+             
+              <hr>
+              <li>
+                  <b><i> La note :  </i></b>
+                  {{selected.note}} 
+              </li>
+              <li>
+                  <b><i> Commentaire :  </i></b>
+                  {{selected.description}} 
+              </li>
+
+              
+</div>
+    </div>
+  </div>
+
+</div>
+</div>
+

@@ -1,0 +1,15 @@
+table {
+  width: 100%;
+}
+th, td {
+  border-bottom: 1px solid #ddd;
+}
+.example-form-field {
+  width: 200px;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.button5 {border-radius: 50%;}

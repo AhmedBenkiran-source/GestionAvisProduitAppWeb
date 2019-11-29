@@ -1,0 +1,161 @@
+
+<hr>
+<div *ngIf="operation == 'Ajouter'" class="alert alert-success alert-dismissable fade show" >
+  <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+<div *ngIf="operation == 'Edit'" class="alert alert-warning alert-dismissable fade show">
+  <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+  <div  *ngIf="operation == 'Supprimer'" class="alert alert-danger alert-dismissable fade show">
+    <button class="close" data-dismiss="alert" aria-label="Close">×</button><strong>Succès!</strong> L'operation été bien fait.</div>
+
+
+<div class="row">
+
+  <div class="col-md-8"> 
+      <div class="main-card mb-3 card">
+          <div class="card-body"><h5 class="card-title"><b><i>Les Marques</i></b></h5>
+            <hr>
+            <button class="pull-right btn btn-outline-primary fa fa-plus-circle " (click)="operation ='Add'; " > Ajouter nouveau marque </button>
+
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="array" matSort>
+              
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="libelle">
+                    <th mat-header-cell *matHeaderCellDef> Libelle </th>
+                    <td mat-cell *matCellDef="let element"> {{element.libelle}} </td>
+                  </ng-container>
+              
+                          
+                  <ng-container matColumnDef="createdAt">
+                      <th mat-header-cell *matHeaderCellDef> Créé à </th>
+                      <td mat-cell *matCellDef="let element"> {{element.createdAt | date:'short' }} </td>
+                    </ng-container>
+                  
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="updatedAt">
+                      <th mat-header-cell *matHeaderCellDef> Mis à jour à </th>
+                      <td mat-cell *matCellDef="let element"> {{element.updatedAt | date:'short'}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="active">
+                        <th mat-header-cell *matHeaderCellDef >  </th>
+                        <td mat-cell *matCellDef="let element">  
+                            <button *ngIf = "element.active" class="btn btn-outline-danger btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="isActive" (click)="isActive(element) ;operation ='Supprimer';selected=element;">
+                                <i class="fa fa-toggle-on font-14"></i>
+                            </button>
+                            <button *ngIf = "!element.active" class="btn btn-outline-danger btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="isActive" (click)="isActive(element) ;operation ='Supprimer';selected=element;">
+                                <i class="fa fa-toggle-off font-14"></i>
+                            </button> </td>
+                      </ng-container>
+                
+                    <ng-container matColumnDef="action">
+                      <th mat-header-cell *matHeaderCellDef>  </th>
+                    <td  mat-cell *matCellDef="let element">
+                        <button class="btn btn-outline-warning btn-circle  m-r-5 button5" data-toggle="tooltip" data-original-title="Update" (click)="operation ='Update' ;selected=element"><i class="fa fa-pencil font-14"></i></button>
+                      </td>
+                  </ng-container>
+                
+                  <ng-container matColumnDef="view">
+                      <th mat-header-cell *matHeaderCellDef>  </th>
+                    <td  mat-cell *matCellDef="let element">
+                        <button class="btn btn-outline-primary btn-circle m-r-5 button5 "   data-toggle="tooltip" data-original-title="View" (click)="operation ='View' ;selected=element"><i class="fa fa-eye font-14"></i></button>
+
+                      </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+         
+              <mat-paginator #paginator [pageSize]="pageSize"  
+                [showFirstLastButtons]="true" [length]="totalSize"
+                [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+              </mat-paginator>
+          </div>
+
+              
+
+          </div>
+      </div>
+  </div>
+
+  <div class="col-md-4">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+              <h5 class="card-title"> <b><i>{{ 
+                operation == 'Update' ? 'Modifier marque '  + selected.libelle:
+                operation == 'Add' ? 'Ajouter un nouveau marque' :
+                operation == 'View' ? ' Marque ' + selected.libelle:
+                operation == 'Supprimer' ? 'Confirmation de la suppression marque' + selected.libelle : ' choisir l opération'
+              }}</i></b></h5>
+              <hr>
+              <form  [formGroup]="AddMarque">
+                  <div class="position-relative form-group" *ngIf=" operation == 'Add'"  >
+                      <input  id="exampleAddress" formControlName="libelle"
+                    placeholder="Marque ..."
+                    type="text"
+                    class="form-control">
+                  </div>
+                  <div class="position-relative form-group" *ngIf=" operation == 'Add'"  >
+                    <input  id="exampleAddress" formControlName="description"
+                  placeholder="Description ..."
+                  type="text"
+                  class="form-control">
+                </div>
+         
+                <div  class="position-relative form-group" *ngIf=" operation == 'Add'"  >
+                    <label for="filemarque" class="btn btn-primary btn-block btn-outlined">Select Icone de marque</label>
+                    <input type="file" name="filemarque" id="filemarque" style="visibility:hidden;"  (change)='handleFileInput($event)' >
+                  </div>
+        
+                  <div class="form-group row"  *ngIf=" operation == 'Add'">
+                    <div class="col-sm-12 ml-sm-auto">
+                        <button type="reset" class="btn btn-warning">Cancel</button>
+                        <button  type="submit" [disabled]= "AddMarque.prestine || AddMarque.invalid" class="  pull-right btn btn-info notika-btn-cyan"  (click)="processForm(-1)"   (click)="operation ='Ajouter'; "  >Ajouter</button>
+                    </div>
+                </div>
+                
+              </form>
+              <form  [formGroup]="EditMarque" >
+                    <div class="position-relative form-group" *ngIf=" operation == 'Update'"  >
+                        <input [(ngModel)]="selected.libelle" formControlName="libelle" id="exampleAddress"
+                      placeholder="Marque ..."
+                      type="text"
+                      class="form-control">
+                    </div>
+                    <div class="position-relative form-group" *ngIf=" operation == 'Update'"  >
+                      <input  id="exampleAddress" [(ngModel)]="selected.description"   formControlName="description"
+                    placeholder="Description ..."
+                    type="text"
+                    class="form-control">
+                  </div>
+                  <div  class="position-relative form-group" *ngIf=" operation == 'Update'"  >
+                      <label for="filemarque" class="btn btn-primary btn-block btn-outlined">Select Icone de marque</label>
+                      <input type="file" name="filemarque" id="filemarque" style="visibility:hidden;"  (change)='handleFileInput($event)' >
+                    </div>
+                 
+                    <div class="form-group row"  *ngIf=" operation == 'Update'">
+                      <div class="col-sm-12 ml-sm-auto">
+                          <button type="reset" class="btn btn-warning">Cancel</button>
+                          <button  type="submit" [disabled]= "EditMarque.prestine || EditMarque.invalid" class="  pull-right btn btn-info notika-btn-cyan"  (click)="processForm(selected.id)" (click)="operation ='Edit'; " >Modifier</button>
+                      </div>
+                  </div>
+                  
+              </form>
+              <div  *ngIf=" operation == 'View'">
+                        <img class="img-fluid img-thumbnail" [src]="URL+selected.imageMarque" style="height: 150;width:fit-content;">
+                        <hr>
+                          
+                          <li> <b><i> Créé à :  </i></b> {{ selected.createdAt | date:'medium'}}</li>
+                            <li><b><i> Mis à jour à :  </i> </b>  {{ selected.updatedAt | date:'medium'}}</li>
+                            <hr>
+                              {{selected.description}} 
+                            <hr>
+
+                            
+             </div>
+      
+              </div>
+        </div>
+  </div>
+</div>
+

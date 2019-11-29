@@ -1,0 +1,162 @@
+
+<div class="mb-3 card">
+  <div class="card-header-tab card-header">
+    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
+      Performance du portefeuille
+    </div>
+  </div>
+  <div class="no-gutters row">
+    <div class="col-sm-6 col-md-4 col-xl-4">
+      <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+        <div class="icon-wrapper rounded-circle">
+          <div class="icon-wrapper-bg opacity-10 bg-warning"></div>
+          <i class="pe-7s-album text-white opacity-8"></i></div>
+        <div class="widget-chart-content">
+          <div class="widget-subheading">Nombre des produits active</div>
+          <div class="widget-numbers">{{proActive}}</div>
+         
+        </div>
+      </div>
+      <div class="divider m-0 d-md-none d-sm-block"></div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-xl-4">
+      <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+        <div class="icon-wrapper rounded-circle">
+          <div class="icon-wrapper-bg opacity-9 bg-danger"></div>
+          <i class="pe-7s-portfolio text-white"></i></div>
+        <div class="widget-chart-content">
+          <div class="widget-subheading">Nombre des produits non active</div>
+          <div class="widget-numbers "><span>{{proNonActive}}</span></div>
+        </div>
+      </div>
+      <div class="divider m-0 d-md-none d-sm-block"></div>
+    </div>
+    <div class="col-sm-12 col-md-4 col-xl-4">
+      <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+        <div class="icon-wrapper rounded-circle">
+          <div class="icon-wrapper-bg opacity-9 bg-success"></div>
+          <i class="pe-7s-light text-white"></i></div>
+        <div class="widget-chart-content">
+          <div class="widget-subheading">Nombre des clients</div>
+          <div class="widget-numbers "><span>{{user}}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+
+
+<div class="row">
+  
+  <div class="col-sm-12 col-lg-12">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-3 widget-chart widget-chart2 text-left card-btm-border card-shadow-success border-success">
+          <div class="widget-chat-wrapper-outer">
+            <div class="widget-chart-content pt-3 pl-3 pb-1">
+              <div class="widget-chart-flex">
+                <div class="widget-numbers">
+                  <div class="widget-chart-flex">
+                    <div class="fsize-4">
+                      <span>{{comtActive}}</span></div>
+                  </div>
+                </div>
+              </div>
+              <h6 class="widget-subheading mb-0 opacity-5">Nombre des commentaire active</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="col-lg-4">
+        <div class="card mb-3 widget-chart widget-chart2 text-left card-btm-border card-shadow-warning border-warning">
+          <div class="widget-chat-wrapper-outer">
+            <div class="widget-chart-content pt-3 pl-3 pb-1">
+              <div class="widget-chart-flex">
+                <div class="widget-numbers">
+                  <div class="widget-chart-flex">
+                    <div class="fsize-4">
+                      <span>{{catActive}}</span></div>
+                  </div>
+                </div>
+              </div>
+              <h6 class="widget-subheading mb-0 opacity-5">Nombre des categories active</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card mb-3 widget-chart widget-chart2 text-left card-btm-border card-shadow-info border-info">
+          <div class="widget-chat-wrapper-outer">
+            <div class="widget-chart-content pt-3 pl-3 pb-1">
+              <div class="widget-chart-flex">
+                <div class="widget-numbers">
+                  <div class="widget-chart-flex">
+                    <div class="fsize-4">
+                      <span>{{marActive}}</span></div>
+                  </div>
+                </div>
+              </div>
+              <h6 class="widget-subheading mb-0 opacity-5">Nombre des marques active</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card mb-3 widget-chart widget-chart2 text-left card-btm-border card-shadow-primary border-primary">
+          <div class="widget-chat-wrapper-outer">
+            <div class="widget-chart-content pt-3 pl-3 pb-1">
+              <div class="widget-chart-flex">
+                <div class="widget-numbers">
+                  <div class="widget-chart-flex">
+                    <div class="fsize-4">
+                      <span>{{comtNonActive}}</span></div>
+                  </div>
+                </div>
+              </div>
+              <h6 class="widget-subheading mb-0 opacity-5">Nombre des commentaire non active</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card mb-3 widget-chart widget-chart2 text-left card-btm-border card-shadow-danger border-danger">
+          <div class="widget-chat-wrapper-outer">
+            <div class="widget-chart-content pt-3 pl-3 pb-1">
+              <div class="widget-chart-flex">
+                <div class="widget-numbers">
+                  <div class="widget-chart-flex">
+                    <div class="fsize-4">
+                      <span>{{catNonActive}}</span></div>
+                  </div>
+                </div>
+              </div>
+              <h6 class="widget-subheading mb-0 opacity-5">Nombre des categories non active</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     
+      <div class="col-lg-4">
+        <div class="card mb-3 widget-chart widget-chart2 text-left card-btm-border card-shadow-warning border-warning">
+          <div class="widget-chat-wrapper-outer">
+            <div class="widget-chart-content pt-3 pl-3 pb-1">
+              <div class="widget-chart-flex">
+                <div class="widget-numbers">
+                  <div class="widget-chart-flex">
+                    <div class="fsize-4">
+                      <span>{{marNonActive}}</span></div>
+                  </div>
+                </div>
+              </div>
+              <h6 class="widget-subheading mb-0 opacity-5">Nombre des marques non active</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
